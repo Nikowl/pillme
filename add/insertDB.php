@@ -9,17 +9,17 @@
     }
     $query = $pdo->prepare($sql);
     $query->execute([
-        'brand' => $arrayForm['brand'],
-        'codeProduct' => $arrayForm['codeProduct'],
-        'name' => $arrayForm['name'],
-        'amount' => $arrayForm['amount'],
-        'amountUnit' => $arrayForm['amountUnit'],
-        'dosage' => $arrayForm['dosage'],
-        'dosageUnit' => $arrayForm['dosageUnit'],
-        'serving' => $arrayForm['serving'],
-        'servingUnit' => $arrayForm['servingUnit'],
-        'perDay' => $arrayForm['perDay'],
-        'timeOfTaking' => $arrayForm['timeOfTaking'],
-//        'expirationDate' => $arrayForm['expirationDate']
+        'brand' => $myInputs['brand'],
+        'codeProduct' => $myInputs['codeProduct'],
+        'name' => $myInputs['name'],
+        'amount' => $myInputs['amount'],
+        'amountUnit' => $myInputs['amountUnit'],
+        'dosage' => $myInputs['dosage'],
+        'dosageUnit' => $myInputs['dosageUnit'],
+        'serving' => $myInputs['serving'],
+        'servingUnit' => $myInputs['servingUnit'],
+        'perDay' => $myInputs['perDay'],
+        'timeOfTaking' => $myInputs['timeOfTaking'],
+//        'expirationDate' => $myInputs['expirationDate']
     ]);
     header("Location: /?route=addProduct");

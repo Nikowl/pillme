@@ -7,7 +7,6 @@
         <div class="card-body pt-0">
             <h5 class="card-title"><?= $row->name, " ", $row->dosage, $row->dosageUnit, ", ", $row->amount, $row->amountUnit ?></h5>
             <p class="card-text my-0"><small class="text-muted"><b>Производитель: </b> <?= $row->brand ?></small></p>
-            <p class="card-text my-0"><small class="text-muted"><b>Срок годности: </b> <?= $row->codeProduct ?></small></p>
             <div class="d-grid gap-2">
                 <button class="btn btn-success btn-sm mt-2" type="button">Добавить в график приёма</button>
             </div>
