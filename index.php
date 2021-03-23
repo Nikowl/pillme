@@ -1,22 +1,18 @@
 <?php
-//    print_r($_REQUEST);die();
-    echo '<pre>' . print_r($_SERVER, true) . '</pre>';die();
     define('ROOT_DIR', __DIR__);
-
-
     $route = require_once(ROOT_DIR . '/config/routeConfig.php');
-    require(ROOT_DIR . '/components/header.php');
-    if (!empty($_GET['route']) && array_key_exists($_GET['route'], $route)) {
-//            echo count($_GET);
-            require ($route[$_GET['route']]);
-    } else {
+    require('components/header.php');
+    if ($_SERVER['REQUEST_URI'] === '/') {
         try {
-            $pdo = require_once(ROOT_DIR . '/config/dbConfig.php');
+            $pdo = require_once(ROOT_DIR . '/connectionDB.php');
         } catch (PDOException $e) {
-            print "Error!: " . $e->getMessage();
-            die();
+            die("Error!: " . $e->getMessage());
         }
         $query = $pdo->query('SELECT * FROM products');
         require_once(ROOT_DIR . '/components/gridCards.php');
+    } elseif ((array_key_exists($_SERVER['REQUEST_URI'], $route)) || (array_key_exists($_SERVER['REQUEST_URI'] = $_GET['route'] ?? null, $route))) {
+        require_once($route[$_SERVER['REQUEST_URI']]);
+    } else {
+        require(ROOT_DIR . '/404.php');
     }
-    require('components/footer.php');
+    require(ROOT_DIR . '/components/footer.php');

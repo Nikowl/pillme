@@ -1,3 +1,5 @@
+<?//= $_SERVER['REQUEST_URI'] . '</br>'?>
+<?//= $_SERVER['SCRIPT_FILENAME']?>
 <section class="bg-light">
     <div class="container py-5">
         <?php $param = $_GET ?>

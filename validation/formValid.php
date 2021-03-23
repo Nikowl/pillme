@@ -45,7 +45,8 @@
         if (($myInputs !== false) && (count($myInputs) === count(array_filter($myInputs)))) {
             require('../add/insertDB.php');
         } else {
-            $_GET['route'] = 'addProduct';
+//            $_GET['route'] = '/addProduct';
+            $_SERVER['REQUEST_URI'] = '/addProduct';
             $_GET['attention'] = true;
             $_GET['attentionEmpty'] = '* Заполните обязательные поля';
             /*if (($myInputs === false) && (count($myInputs) !== count(array_filter($myInputs)))) {
@@ -55,6 +56,7 @@
 
 //            $_GET['attentionNotNumber'] = '* Допускаются только целые числа от 1 - 5000';
             require("../index.php");
+//            header("Location: /addProduct");
         }
     }
 
