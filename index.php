@@ -1,18 +1,26 @@
 <?php
+    // инициализация
     define('ROOT_DIR', __DIR__);
-    $route = require_once(ROOT_DIR . '/config/routeConfig.php');
-    require('components/header.php');
-    if ($_SERVER['REQUEST_URI'] === '/') {
-        try {
-            $pdo = require_once(ROOT_DIR . '/connectionDB.php');
-        } catch (PDOException $e) {
-            die("Error!: " . $e->getMessage());
-        }
-        $query = $pdo->query('SELECT * FROM products');
-        require_once(ROOT_DIR . '/components/gridCards.php');
-    } elseif ((array_key_exists($_SERVER['REQUEST_URI'], $route)) || (array_key_exists($_SERVER['REQUEST_URI'] = $_GET['route'] ?? null, $route))) {
-        require_once($route[$_SERVER['REQUEST_URI']]);
-    } else {
-        require(ROOT_DIR . '/404.php');
-    }
-    require(ROOT_DIR . '/components/footer.php');
+
+    $logPass = require_once(ROOT_DIR.'/config/logPass.php');
+    $connection = new PDO($logPass['dsn'], $logPass['username'], $logPass['password']);
+
+    // роут
+    $routes = require_once(ROOT_DIR . '/config/routes.php');
+
+    /**
+     * TODO: написать парсер строки запроса, чтобы запросы вида
+     * TODO: /createProduct?brand=&codeProduct=&name=&amount=&amountUnit=&dosage=&dosageUnit=&serving=&servingUnit=&perDay=&timeOfTaking=
+     * TODO: разделялись на роут и парамеры. Проверка маршрутизации должна быть только по роуту.
+     * TODO: то есть в примере выше роут это '/createProduct' и он описан в routes.php, а остальное это параметры
+     */
+
+    $requestedRoute = explode('?', $_SERVER['REQUEST_URI'])[0] ?? null;
+    $route = $routes[$requestedRoute] ?? $routes['404'];
+
+    // шаблон
+    require(ROOT_DIR . '/components/common/header.php');
+
+    require_once ($route);
+
+    require(ROOT_DIR . '/components/common/footer.php');

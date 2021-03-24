@@ -1,9 +1,10 @@
-<?//= $_SERVER['REQUEST_URI'] . '</br>'?>
-<?//= $_SERVER['SCRIPT_FILENAME']?>
+<?php
+    $param = $_GET;
+?>
+
 <section class="bg-light">
     <div class="container py-5">
-        <?php $param = $_GET ?>
-        <form action="<?php ROOT_DIR ?>/validation/formValid.php" method="get">
+        <form action="/createProduct" method="get">
             <div class="row g-2 mb-2">
                 <div class="form-floating col-md-4">
                     <input type="text" name="brand" class="form-control" id="brand" placeholder="brand"
@@ -26,6 +27,7 @@
                            value="<?= $param['name'] ?? "" ?>"
                            style="<?= (!empty($param['attention'])) && (empty($param['name'])) ? 'border: 1px solid red' : "" ?>">
                     <label for="name">Название</label>
+                    <small class="text-danger"><?=$_GET['errors']['name'] ?? null?></small>
                 </div>
             </div>
             <div class="row g-2 mb-2">
