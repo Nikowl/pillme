@@ -18,17 +18,17 @@
     /** @var PDO $connection */
     $statement = $connection->prepare($sql);
     $statement->execute([
-        'brand' => $params['brand'],
-        'codeProduct' => $params['codeProduct'],
-        'name' => $params['name'],
-        'amount' => $params['amount'],
-        'amountUnit' => $params['amountUnit'],
-        'dosage' => $params['dosage'],
-        'dosageUnit' => $params['dosageUnit'],
-        'serving' => $params['serving'],
-        'servingUnit' => $params['servingUnit'],
-        'perDay' => $params['perDay'],
-        'timeOfTaking' => $params['timeOfTaking'],
+        'brand' => $params['input']['brand'],
+        'codeProduct' => $params['input']['codeProduct'],
+        'name' => $params['input']['name'],
+        'amount' => $params['input']['amount'],
+        'amountUnit' => $params['input']['amountUnit'],
+        'dosage' => $params['input']['dosage'],
+        'dosageUnit' => $params['input']['dosageUnit'],
+        'serving' => $params['input']['serving'],
+        'servingUnit' => $params['input']['servingUnit'],
+        'perDay' => $params['input']['perDay'],
+        'timeOfTaking' => $params['input']['timeOfTaking'],
 //        'expirationDate' => $params['expirationDate']
     ]);
 
