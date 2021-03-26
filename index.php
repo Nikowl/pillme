@@ -19,7 +19,7 @@
     $route = $routes[$requestedRoute] ?? $routes['404'];
 
     // шаблон
-    require(ROOT_DIR . '/components/common/header.php');
+//    require(ROOT_DIR . '/components/common/header.php');
 
     require_once ($route);
 

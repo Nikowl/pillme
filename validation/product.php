@@ -20,17 +20,17 @@
     function validateProduct(array $params): array
     {
         $input = filter_var_array($params, getProductValidationRules());
-        if (($input !== false) && (empty(emptyElements($input)))) {
-            $result['input'] = $params;
+//        var_dump($input);exit();
+        if (($input !== false) && (empty(emptyElements($input)))) { // TODO: Исправить первое правило проверки. Проверка ($input !== false) не работает,
+            $result['input'] = $params; // TODO: Так как filter_var_array()возвращает значение false для каждого проверяемого элемента массива в случае возникновения ошибки.
             $result['errors'] = [];
-//            return $result;
 
         } else {
             $result = [
-                'input' => array_filter($params),
-                'errors' => emptyElements($input)
+                'input' => array_filter($input),
+                'errors' => emptyElements($input),
+                'attention' => "*Числа должны быть в диапазоне от 1 до 5000" . "</br>" . "*Поля не должны быть пустыми",
             ];
-//            return $result;
         }
 
         //TODO: написать проверку обязательности полей. Сейчас пропускает пустые строки.
@@ -53,16 +53,14 @@
 
     function emptyElements(array $arr): array
     {
-        if (count($arr) === count(array_filter($arr)))
+        $errors = [];
+        if (count($arr) !== count(array_filter($arr)))
         {
-            return $errors = [];
-        }
-        else {
             foreach ($arr as $key=>$value) {
                 !empty($value) ?: $errors[$key] = 'Заполните это поле';
             }
-            return $errors;
         }
+        return $errors;
     }
 
     function getProductValidationRules(): array
