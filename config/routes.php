@@ -1,11 +1,24 @@
 <?php
     return [
-        "/" => ROOT_DIR . "/components/products/index.php",
-
+        "/" => [
+            "handler" => false,
+            "file" => ROOT_DIR . "/components/products/index.php"
+        ],
         // Товары
-        "/addProduct" => ROOT_DIR . "/components/products/add.php",
-        "/createProduct" => ROOT_DIR . "/components/products/create.php",
+        "/addProduct" => [
+            "handler" => false,
+            "file" => ROOT_DIR . "/components/products/add.php"
+        ],
+        "/createProduct" => [
+            "handler" => true,
+            "file" => ROOT_DIR . "/components/products/create.php",
+        ],
 
         // Статические страницы
-        "404" => ROOT_DIR . "/components/pages/404.php",
+        "404" => [
+            "handler" => false,
+            "file" => ROOT_DIR . "/components/pages/404.php",
+        ]
+
+
     ];
