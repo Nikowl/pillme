@@ -3,13 +3,13 @@
     /*     * Файл валидации должен содержать только функции для проверки данных. Подключается только там где нужен. */
 
 
-    function validateProduct(array $params): array
+    function validateProduct(array $arr): array
     {
-        $input = filter_var_array($params, getProductValidationRules());
+        $input = filter_var_array($arr, getProductValidationRules());
 //        var_dump($errors= checkEmptyValues($input)) ;
         $errors= checkEmptyValues($input);
         $result = [
-            'input' => $params,
+            'input' => $arr,
             'errors' => $errors,
              'attention' => "*Числа должны быть в диапазоне от 1 до 5000" . "</br>" . "*Поля не должны быть пустыми",
         ];

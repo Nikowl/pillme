@@ -7,10 +7,8 @@
 
     // роут
     $routes = require_once(ROOT_DIR . '/config/routes.php');
-
     $requestedRoute = explode('?', $_SERVER['REQUEST_URI'])[0] ?? null;
     $route = $routes[$requestedRoute] ?? $routes['404'];
-//    var_dump($route);
     if ($route['handler']) {
         // обработчик
         require_once ($route['file']);
