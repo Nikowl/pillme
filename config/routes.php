@@ -13,6 +13,10 @@
             "handler" => true,
             "file" => ROOT_DIR . "/components/products/create.php",
         ],
+        "/filters" => [
+            "handler" => true,
+            "file" => ROOT_DIR . "/components/product/function.php",
+        ],
 
         // Статические страницы
         "404" => [
