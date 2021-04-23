@@ -4,10 +4,7 @@
     function getCount(PDO $connection, array $filters = []): int
     {
         $filtersQuery = prepareFiltersQuery($connection, $filters);
-        var_dump($filtersQuery); echo '</br>';
-        $count = $connection->query("SELECT COUNT(1) FROM products $filtersQuery;")->fetchColumn();
-        var_dump($count);
-        return $count;
+        return $connection->query("SELECT COUNT(1) FROM products $filtersQuery;")->fetchColumn();
     }
 
     function prepareFiltersQuery(PDO $connection, array $filters = []): string

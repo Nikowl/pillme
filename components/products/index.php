@@ -3,13 +3,11 @@
     /** @var int $limitProductsOnPage */
     $arrayGet = $_GET;
     require_once(ROOT_DIR . '/components/products/function.php');
-//    getCount($connection, $arrayGet['filters'] ?? []);
     $amountPages = getAmountPages($connection, $arrayGet['filters'] ?? []);
-    $page = $arrayGet['page'] ?? 1; // номер страницы TODO: Есть косяк, если значение больше количества страниц. Выведет пустую страницу.
+    $page = (int)($arrayGet['page'] ?? 1); // номер страницы TODO: Есть косяк, если значение больше количества страниц. Выведет пустую страницу.
     $products = getProducts($connection, $page, $arrayGet['filters'] ?? []);
     $brandsFilter = $connection->query("SELECT brand FROM products GROUP BY brand;")->fetchAll(PDO::FETCH_OBJ);
 ?>
-
 <section class="">
     <div class="container-fluid py-5">
         <div class="row">
@@ -20,14 +18,20 @@
                             <legend>Бренд</legend>
                             <?php foreach ($brandsFilter as $brands): ?>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="filters[brand][]"
-                                           value="<?= $brands->brand ?>" id="<?= $brands->brand ?>">
+                                    <?php if (!empty($arrayGet['filters']['brand']) && in_array($brands->brand,
+                                            $arrayGet['filters']['brand'])): ?>
+                                        <input class="form-check-input" type="checkbox" name="filters[brand][]"
+                                               value="<?= $brands->brand ?>" id="<?= $brands->brand ?>" checked>
+                                    <?php else: ?>
+                                        <input class="form-check-input" type="checkbox" name="filters[brand][]"
+                                               value="<?= $brands->brand ?>" id="<?= $brands->brand ?>">
+                                    <?php endif; ?>
                                     <label class="form-check-label" for="<?= $brands->brand ?>">
                                         <?= $brands->brand ?>
                                     </label>
                                 </div>
                             <?php endforeach; ?>
-<!--                            <input type="hidden" name="filters" value=true>-->
+                            <!--                            <input type="hidden" name="filters" value=true>-->
                         </div>
                     </fieldset>
                     <!--                    </div>-->
@@ -91,7 +95,8 @@
                 <ul class="pagination justify-content-center">
                     <?php if ($page !== 1): ?>
                         <li class="page-item">
-                            <a class="page-link" href="/?page=<?= 1 ?>">&laquo;&laquo;</a>
+                            <?php $arrayGet['page'] = 1 ?>
+                            <a class="page-link" href="<?= '/?' . http_build_query($arrayGet) ?>">&laquo;&laquo;</a>
                         </li>
                     <?php else: ?>
                         <li class="page-item disabled">
@@ -100,23 +105,28 @@
                     <?php endif; ?>
                     <?php if ($page !== 1): ?>
                         <li class="page-item">
-                            <a class="page-link" href="/?page=<?= 1 ?>">Назад</a>
+                            <?php $arrayGet['page'] = $page - 1 ?>
+                            <a class="page-link" href="<?= '/?' . http_build_query($arrayGet) ?>">Назад</a>
                         </li>
                     <?php else: ?>
                         <li class="page-item disabled">
                             <a class="page-link" href="#" tabindex="-1">Назад</a>
                         </li>
                     <?php endif; ?>
-                    <?php for ((int)$i = 1; $i <= $amountPages; $i++): ?>
+                    <?php for ($i = 1; $i <= $amountPages; $i++): ?>
                         <?php if ($i === $page): ?>
-                            <li class="page-item active"><a class="page-link" href="/?page=<?= $i ?>"><?= $i ?></a></li>
+                            <li class="page-item active"><a class="page-link" href="#"><?= $i ?></a></li>
                         <?php else: ?>
-                            <li class="page-item"><a class="page-link" href="/?page=<?= $i ?>"><?= $i ?></a></li>
+                            <?php $arrayGet['page'] = $i ?>
+                            <li class="page-item"><a class="page-link"
+                                                     href=" <?= '/?' . http_build_query($arrayGet) ?>"><?= $i ?></a>
+                            </li>
                         <?php endif; ?>
                     <?php endfor; ?>
                     <?php if ($page !== $amountPages): ?>
                         <li class="page-item">
-                            <a class="page-link" href="/?page=<?= $page + 1 ?>">Вперёд</a>
+                            <?php $arrayGet['page'] = $page + 1 ?>
+                            <a class="page-link" href="<?= '/?' . http_build_query($arrayGet) ?>">Вперёд</a>
                         </li>
                     <?php else: ?>
                         <li class="page-item disabled">
@@ -125,7 +135,8 @@
                     <?php endif; ?>
                     <?php if ($page !== $amountPages): ?>
                         <li class="page-item">
-                            <a class="page-link" href="/?page=<?= $amountPages ?>">&raquo;&raquo;</a>
+                            <?php $arrayGet['page'] = $amountPages ?>
+                            <a class="page-link" href="<?= '/?' . http_build_query($arrayGet) ?>">&raquo;&raquo;</a>
                         </li>
                     <?php else: ?>
                         <li class="page-item disabled">

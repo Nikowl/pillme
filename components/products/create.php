@@ -5,7 +5,7 @@
     $params = $_GET;
     $params = validateProduct($params);
     if (!empty($params['errors'])) {
-        header('Location: /addProduct?'.http_build_query(array_merge(['attention' => $params['attention']],['errors' => $params['errors']], $params['input'])));
+        header('Location: /addProduct?' . http_build_query(array_merge(['attention' => $params['attention']],['errors' => $params['errors']], $params['input'])));
         exit();
     }
 
