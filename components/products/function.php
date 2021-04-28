@@ -17,12 +17,12 @@
         foreach ($filters as $key => $value) {
             if (is_array($value)) {
                 foreach ($value as $v) {
-                    $values[] = $key . "='" . addslashes($v) . "'";
+                    $values[] = $key . " LIKE '%" . addslashes($v) . "%'";
                 }
                 $s1[] = '(' . implode(' OR ', $values) . ')';
             } else {
                 if (!empty($value)) {
-                    $s1[] = $key . "='" . addslashes($value) . "'";
+                    $s1[] = $key . " LIKE '%" . addslashes($value) . "%'";
                 }
             }
 
