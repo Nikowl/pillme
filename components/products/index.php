@@ -2,6 +2,7 @@
     /** @var PDO $connection */
     /** @var int $limitProductsOnPage */
     $arrayGet = $_GET;
+    var_export($arrayGet);
     require_once(ROOT_DIR . '/components/products/function.php');
     $amountPages = getAmountPages($connection, $arrayGet['filters'] ?? []);
     $page = (int)($arrayGet['page'] ?? 1); // номер страницы TODO: Есть косяк, если значение больше количества страниц. Выведет пустую страницу.
@@ -12,10 +13,10 @@
     <div class="container-fluid py-5">
         <div class="row">
             <div class="col">
-                <form class="h-25 overflow-auto" action="/" method="get" id="filtersForm">
+                <span class="h5">Производитель</span>
+                <form class="h-25 overflow-auto border rounded px-2" action="/" method="get" id="filtersForm">
                     <fieldset>
                         <div>
-                            <legend>Бренд</legend>
                             <?php foreach ($brandsFilter as $brands): ?>
                                 <div class="form-check">
                                     <?php if (!empty($arrayGet['filters']['brand']) && in_array($brands->brand,
@@ -38,12 +39,15 @@
 
                 </form>
                 <div class="row mt-2">
-                    <div class="col-6 d-grid">
-                        <button type="reset" class="btn btn-sm btn-primary btn-block" form="filtersForm">Сбросить
+                    <div class="col-12 d-grid my-2">
+                        <input type="text" class="form-control" placeholder="Наименование" form="filtersForm" name="filters[name]">
+                    </div>
+                    <div class="col-6 d-grid my-2">
+                        <button type="reset" class="btn btn-sm btn-secondary btn-block" form="filtersForm">Сбросить
                         </button>
                     </div>
-                    <div class="col-6 d-grid">
-                        <button type="submit" class="btn btn-sm btn-success btn-block" form="filtersForm">Применить
+                    <div class="col-6 d-grid my-2">
+                        <button type="submit" class="btn btn-sm btn-primary btn-block" form="filtersForm">Применить
                         </button>
                     </div>
                 </div>
@@ -95,8 +99,7 @@
                 <ul class="pagination justify-content-center">
                     <?php if ($page !== 1): ?>
                         <li class="page-item">
-                            <?php $arrayGet['page'] = 1 ?>
-                            <a class="page-link" href="<?= '/?' . http_build_query($arrayGet) ?>">&laquo;&laquo;</a>
+                            <a class="page-link" href="<?= '/?' . http_build_query(array_merge($arrayGet, ['page'=>1])) ?>">&laquo;&laquo;</a>
                         </li>
                     <?php else: ?>
                         <li class="page-item disabled">
