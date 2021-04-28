@@ -3,6 +3,7 @@
     /** @var int $limitProductsOnPage */
     $arrayGet = $_GET;
     var_export($arrayGet);
+//    var_dump($arrayGet['filters']['name']);
     require_once(ROOT_DIR . '/components/products/function.php');
     $amountPages = getAmountPages($connection, $arrayGet['filters'] ?? []);
     $page = (int)($arrayGet['page'] ?? 1); // номер страницы TODO: Есть косяк, если значение больше количества страниц. Выведет пустую страницу.
@@ -40,10 +41,10 @@
                 </form>
                 <div class="row mt-2">
                     <div class="col-12 d-grid my-2">
-                        <input type="text" class="form-control" placeholder="Наименование" form="filtersForm" name="filters[name]">
+                        <input type="text" class="form-control" value="<?= $arrayGet['filters']['name'] ?? '' ?>" placeholder="Наименование" form="filtersForm" name="filters[name]"  autocomplete="off">
                     </div>
                     <div class="col-6 d-grid my-2">
-                        <button type="reset" class="btn btn-sm btn-secondary btn-block" form="filtersForm">Сбросить
+                        <button  type="reset" class="btn btn-sm btn-secondary btn-block" form="filtersForm">Сбросить
                         </button>
                     </div>
                     <div class="col-6 d-grid my-2">
