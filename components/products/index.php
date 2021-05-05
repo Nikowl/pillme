@@ -8,7 +8,7 @@
     $amountPages = getAmountPages($connection, $arrayGet['filters'] ?? []);
     $page = (int)($arrayGet['page'] ?? 1); // номер страницы TODO: Есть косяк, если значение больше количества страниц. Выведет пустую страницу.
     $products = getProducts($connection, $page, $arrayGet['filters'] ?? []);
-    $brandsFilter = $connection->query("SELECT brand FROM products GROUP BY brand;")->fetchAll(PDO::FETCH_OBJ);
+    $brandsFilter = $connection->query("SELECT brandID,brandName FROM brands;")->fetchAll(PDO::FETCH_OBJ);
 ?>
 <section class="">
     <div class="container-fluid py-5">
@@ -20,16 +20,16 @@
                         <div>
                             <?php foreach ($brandsFilter as $brands): ?>
                                 <div class="form-check">
-                                    <?php if (!empty($arrayGet['filters']['brand']) && in_array($brands->brand,
+                                    <?php if (!empty($arrayGet['filters']['brand']) && in_array($brands->brandID,
                                             $arrayGet['filters']['brand'])): ?>
                                         <input class="form-check-input" type="checkbox" name="filters[brand][]"
-                                               value="<?= $brands->brand ?>" id="<?= $brands->brand ?>" checked>
+                                               value="<?= $brands->brandID ?>" id="<?= $brands->brandID ?>" checked>
                                     <?php else: ?>
                                         <input class="form-check-input" type="checkbox" name="filters[brand][]"
-                                               value="<?= $brands->brand ?>" id="<?= $brands->brand ?>">
+                                               value="<?= $brands->brandID ?>" id="<?= $brands->brandID ?>">
                                     <?php endif; ?>
-                                    <label class="form-check-label" for="<?= $brands->brand ?>">
-                                        <?= $brands->brand ?>
+                                    <label class="form-check-label" for="<?= $brands->brandID ?>">
+                                        <?= $brands->brandName ?>
                                     </label>
                                 </div>
                             <?php endforeach; ?>
@@ -68,7 +68,7 @@
                                     <h5
                                             class="card-title h-50"><?= $product->name, " ", $product->dosage, $product->dosageUnit, ", ", $product->amount, $product->amountUnit ?></h5>
                                     <p class="card-text my-0"><small
-                                                class="text-muted"><b>Производитель: </b> <?= $product->brand ?></small>
+                                                class="text-muted"><b>Производитель: </b> <?= $product->brandName ?></small>
                                     </p>
 
 

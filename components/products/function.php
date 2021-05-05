@@ -9,25 +9,26 @@
 
     function prepareFiltersQuery(array $filters = []): ?string
     {
-        if (empty($filters)) {
+        /*if (empty($filters)) {
             return null;
-        }
+        }*/
         $values = [];
-        $s1 = [];
-        foreach ($filters as $key => $value) {
-            if (is_array($value)) {
-                foreach ($value as $v) {
-                    $values[] = $key . " LIKE '%" . addslashes($v) . "%'";
+        $prepareQuery = [];
+        foreach ($filters as $filter => $valueFilter) {
+            if (is_array($valueFilter)) {
+                foreach ($valueFilter as $v) {
+                    $values[] = $filter . " LIKE '%" . addslashes($v) . "%'";
                 }
-                $s1[] = '(' . implode(' OR ', $values) . ')';
-            } else {
-                if (!empty($value)) {
-                    $s1[] = $key . " LIKE '%" . addslashes($value) . "%'";
-                }
+                $prepareQuery[] = '(' . implode(' OR ', $values) . ')';
+            } elseif (!empty($valueFilter)) {
+                $prepareQuery[] = $filter . " LIKE '%" . addslashes($valueFilter) . "%'";
             }
 
         }
-        return ' WHERE ' . implode(' AND ', $s1);
+        if (empty($prepareQuery)) {
+            return null;
+        }
+        return ' WHERE ' . implode(' AND ', $prepareQuery);
 
     }
 
@@ -52,11 +53,6 @@
     {
         $offset = getOffset($page, $limit);
         $filtersQuery = prepareFiltersQuery($filters);
-        return $connection->query("SELECT * FROM products $filtersQuery LIMIT $limit OFFSET $offset;")->fetchAll(PDO::FETCH_OBJ);
+        return $connection->query("SELECT * FROM products INNER JOIN brands ON products.brand = brands.brandID $filtersQuery LIMIT $limit OFFSET $offset;")->fetchAll(PDO::FETCH_OBJ);
 
-    }
-
-    function getUnits()
-    {
-        return [];
     }

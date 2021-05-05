@@ -34,7 +34,7 @@
     function getProductValidationRules(): array
     {
         return [
-            'brand' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'brand' => FILTER_VALIDATE_INT,
             'codeProduct' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'name' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'amount' => [

@@ -1,4 +1,6 @@
 <?php
+    /** @var PDO $connection */
+    $brands = $connection->query("SELECT brandID,brandName FROM brands;")->fetchAll(PDO::FETCH_OBJ);
     $param = $_GET;
     //    print_r(var_dump($param));exit();
 ?>
@@ -8,10 +10,19 @@
         <form action="/createProduct" method="get">
             <div class="row g-2 mb-2">
                 <div class="form-floating col-sm-12 col-md-8 col-lg-6 col-xl-4">
-                    <input type="text" name="brand" class="form-control" id="brand"
-                           placeholder="<?= $param['errors']['brand'] ?? "brand" ?>"
-                           autocomplete="off" value="<?= $param['brand'] ?? "" ?>"
-                           style="<?= empty($param['errors']['brand']) ?: 'border: 1px solid red' ?>">
+                    <select name="brand" class="form-select" id="brand"
+                            aria-label="Floating label select example" autocomplete="off"
+                            style="<?= empty($param['errors']['brand']) ?: 'border: 1px solid red' ?>">
+                        <option selected></option>
+                        <?php foreach ($brands as $brand): ?>
+                            <?php if (!empty($param['brand']) && $brand->brandID ===
+                                    $param['brand']): ?>
+                                <option selected value="<?= $brand->brandID ?>"><?= $brand->brandName ?></option>
+                            <?php else: ?>
+                                <option value="<?= $brand->brandID ?>"><?= $brand->brandName ?></option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </select>
                     <label for="brand">Производитель</label>
                 </div>
             </div>
