@@ -12,8 +12,7 @@
     if ($route['handler']) {
         // обработчик
         require_once ($route['file']);
-    }
-    else {
+    } else {
         //шаблон
         require(ROOT_DIR . '/components/common/header.php');
 

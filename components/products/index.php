@@ -1,13 +1,15 @@
 <?php
     /** @var PDO $connection */
     /** @var int $limitProductsOnPage */
-    $arrayGet = $_GET;
-    var_export($arrayGet);
-//    var_dump($arrayGet['filters']['name']);
     require_once(ROOT_DIR . '/components/products/function.php');
-    $amountPages = getAmountPages($connection, $arrayGet['filters'] ?? []);
-    $page = (int)($arrayGet['page'] ?? 1); // номер страницы TODO: Есть косяк, если значение больше количества страниц. Выведет пустую страницу.
-    $products = getProducts($connection, $page, $arrayGet['filters'] ?? []);
+
+    $query = normalizeProductsQuery($_GET);
+
+    $amountPages = getAmountPages($connection, $query['filters'] ?? []);
+    $page = (int)($query['page'] ?? 1); // номер страницы TODO: Есть косяк, если значение больше количества страниц. Выведет пустую страницу.
+    $products = getProducts($connection, $page, $query['filters'] ?? []);
+
+    // TODO: не пора ли создать новый файл с функциями для брендов?
     $brandsFilter = $connection->query("SELECT brandID,brandName FROM brands;")->fetchAll(PDO::FETCH_OBJ);
 ?>
 <section class="">
@@ -20,8 +22,7 @@
                         <div>
                             <?php foreach ($brandsFilter as $brands): ?>
                                 <div class="form-check">
-                                    <?php if (!empty($arrayGet['filters']['brand']) && in_array($brands->brandID,
-                                            $arrayGet['filters']['brand'])): ?>
+                                    <?php if (!empty($query['filters']['brand']) && in_array($brands->brandID, $query['filters']['brand'])): ?>
                                         <input class="form-check-input" type="checkbox" name="filters[brand][]"
                                                value="<?= $brands->brandID ?>" id="<?= $brands->brandID ?>" checked>
                                     <?php else: ?>
@@ -33,15 +34,12 @@
                                     </label>
                                 </div>
                             <?php endforeach; ?>
-                            <!--                            <input type="hidden" name="filters" value=true>-->
                         </div>
                     </fieldset>
-                    <!--                    </div>-->
-
                 </form>
                 <div class="row mt-2">
                     <div class="col-12 d-grid my-2">
-                        <input type="text" class="form-control" value="<?= $arrayGet['filters']['name'] ?? '' ?>" placeholder="Наименование" form="filtersForm" name="filters[name]"  autocomplete="off">
+                        <input type="text" class="form-control" value="<?= $query['filters']['name'] ?? '' ?>" placeholder="Наименование" form="filtersForm" name="filters[name]" autocomplete="off">
                     </div>
                     <div class="col-6 d-grid my-2">
                         <button  type="reset" class="btn btn-sm btn-secondary btn-block" form="filtersForm">Сбросить
@@ -100,7 +98,7 @@
                 <ul class="pagination justify-content-center">
                     <?php if ($page !== 1): ?>
                         <li class="page-item">
-                            <a class="page-link" href="<?= '/?' . http_build_query(array_merge($arrayGet, ['page'=>1])) ?>">&laquo;&laquo;</a>
+                            <a class="page-link" href="<?= '/?' . http_build_query(array_merge($query, ['page'=>1])) ?>">&laquo;&laquo;</a>
                         </li>
                     <?php else: ?>
                         <li class="page-item disabled">
@@ -109,8 +107,9 @@
                     <?php endif; ?>
                     <?php if ($page !== 1): ?>
                         <li class="page-item">
-                            <?php $arrayGet['page'] = $page - 1 ?>
-                            <a class="page-link" href="<?= '/?' . http_build_query($arrayGet) ?>">Назад</a>
+                            <!-- TODO: переписать этот кусок (и все похожие) так, чтобы не менять родительский массив -->
+                            <?php $query['page'] = $page - 1 ?>
+                            <a class="page-link" href="<?= '/?' . http_build_query($query) ?>">Назад</a>
                         </li>
                     <?php else: ?>
                         <li class="page-item disabled">
@@ -121,16 +120,16 @@
                         <?php if ($i === $page): ?>
                             <li class="page-item active"><a class="page-link" href="#"><?= $i ?></a></li>
                         <?php else: ?>
-                            <?php $arrayGet['page'] = $i ?>
+                            <?php $query['page'] = $i ?>
                             <li class="page-item"><a class="page-link"
-                                                     href=" <?= '/?' . http_build_query($arrayGet) ?>"><?= $i ?></a>
+                                                     href=" <?= '/?' . http_build_query($query) ?>"><?= $i ?></a>
                             </li>
                         <?php endif; ?>
                     <?php endfor; ?>
                     <?php if ($page !== $amountPages): ?>
                         <li class="page-item">
-                            <?php $arrayGet['page'] = $page + 1 ?>
-                            <a class="page-link" href="<?= '/?' . http_build_query($arrayGet) ?>">Вперёд</a>
+                            <?php $query['page'] = $page + 1 ?>
+                            <a class="page-link" href="<?= '/?' . http_build_query($query) ?>">Вперёд</a>
                         </li>
                     <?php else: ?>
                         <li class="page-item disabled">
@@ -139,8 +138,8 @@
                     <?php endif; ?>
                     <?php if ($page !== $amountPages): ?>
                         <li class="page-item">
-                            <?php $arrayGet['page'] = $amountPages ?>
-                            <a class="page-link" href="<?= '/?' . http_build_query($arrayGet) ?>">&raquo;&raquo;</a>
+                            <?php $query['page'] = $amountPages ?>
+                            <a class="page-link" href="<?= '/?' . http_build_query($query) ?>">&raquo;&raquo;</a>
                         </li>
                     <?php else: ?>
                         <li class="page-item disabled">

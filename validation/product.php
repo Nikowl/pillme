@@ -3,20 +3,17 @@
     /*     * Файл валидации должен содержать только функции для проверки данных. Подключается только там где нужен. */
 
 
-    function validateProduct(array $arr): array
+    function validateCreateProductQuery(array $productData): array
     {
-        $input = filter_var_array($arr, getProductValidationRules());
-//        var_dump($errors= checkEmptyValues($input)) ;
-        $errors= checkEmptyValues($input);
-        $result = [
-            'input' => $arr,
+        $validatedData = filter_var_array($productData, getProductValidationRules());
+
+        $errors= checkEmptyValues($validatedData);
+
+        return [
+            'input' => $productData,
             'errors' => $errors,
-             'attention' => "*Числа должны быть в диапазоне от 1 до 5000" . "</br>" . "*Поля не должны быть пустыми",
+            'attention' => "*Числа должны быть в диапазоне от 1 до 5000</br>*Поля не должны быть пустыми",
         ];
-        return $result;
-
-
-
     }
 
     function checkEmptyValues(array $arr): array
@@ -34,6 +31,7 @@
     function getProductValidationRules(): array
     {
         return [
+            // TODO: с вводом отдельной таблицы для брендов, тут нужно проверить, что переданный ид бренда существует в таблице
             'brand' => FILTER_VALIDATE_INT,
             'codeProduct' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'name' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
