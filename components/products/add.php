@@ -9,7 +9,6 @@
 
 <section class="bg-light">
     <div class="container py-5">
-        <!-- TODO: создание сущности должно идти через метод POST -->
         <form action="/createProduct" method="post">
             <div class="row g-2 mb-2">
                 <div class="form-floating col-sm-12 col-md-8 col-lg-6 col-xl-4">
