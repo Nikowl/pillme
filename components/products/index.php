@@ -10,7 +10,7 @@
     $products = getProducts($connection, $page, $query['filters'] ?? []);
 
     // TODO: не пора ли создать новый файл с функциями для брендов?
-    $brandsFilter = $connection->query("SELECT id , name  FROM brands;")->fetchAll(PDO::FETCH_OBJ);
+    $brandsFilter = $connection->query("SELECT id as brandID , name as brandName  FROM brands;")->fetchAll(PDO::FETCH_OBJ);
 ?>
 <section class="">
     <div class="container-fluid py-5">
@@ -22,15 +22,15 @@
                         <div>
                             <?php foreach ($brandsFilter as $brands): ?>
                                 <div class="form-check">
-                                    <?php if (!empty($query['filters']['brandID']) && in_array($brands->id, $query['filters']['brandID'])): ?>
+                                    <?php if (!empty($query['filters']['brandID']) && in_array($brands->brandID, $query['filters']['brandID'])): ?>
                                         <input class="form-check-input" type="checkbox" name="filters[brandID][]"
-                                               value="<?= $brands->id ?>" id="<?= $brands->id ?>" checked>
+                                               value="<?= $brands->brandID ?>" id="<?= $brands->brandID ?>" checked>
                                     <?php else: ?>
                                         <input class="form-check-input" type="checkbox" name="filters[brandID][]"
-                                               value="<?= $brands->id ?>" id="<?= $brands->id ?>">
+                                               value="<?= $brands->brandID ?>" id="<?= $brands->brandID ?>">
                                     <?php endif; ?>
-                                    <label class="form-check-label" for="<?= $brands->id ?>">
-                                        <?= $brands->name ?>
+                                    <label class="form-check-label" for="<?= $brands->brandID ?>">
+                                        <?= $brands->brandName ?>
                                     </label>
                                 </div>
                             <?php endforeach; ?>
@@ -64,9 +64,9 @@
                                 </figure>
                                 <div class="card-body pt-0">
                                     <h5
-                                            class="card-title h-50"><?= $product->name, " ", $product->dosage, $product->dosageUnit, ", ", $product->amount, $product->amountUnit ?></h5>
+                                            class="card-title h-50"><?= $product->brandName, " ", $product->dosage, $product->dosageUnit, ", ", $product->amount, $product->amountUnit ?></h5>
                                     <p class="card-text my-0"><small
-                                                class="text-muted"><b>Производитель: </b> <?= $product->name ?></small>
+                                                class="text-muted"><b>Производитель: </b> <?= $product->brandName ?></small>
                                     </p>
 
 

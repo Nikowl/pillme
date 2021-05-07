@@ -2,7 +2,7 @@
     // TODO: см. замечание в кипе про префиксы колонок в таблице
 
     /** @var PDO $connection */
-    $brands = $connection->query("SELECT brandID,brandName FROM brands;")->fetchAll(PDO::FETCH_OBJ);
+    $brands = $connection->query("SELECT id as brandID,name as brandName FROM brands;")->fetchAll(PDO::FETCH_OBJ);
 
     $query = $_GET;
 ?>
