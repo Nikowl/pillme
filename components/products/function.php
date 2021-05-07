@@ -61,7 +61,7 @@
         //      products AS p
         //  INNER JOIN brands AS b ON p.brand = b.id
         //  ...
-        return $connection->query("SELECT * FROM products INNER JOIN brands ON products.brand = brands.brandID $filtersQuery LIMIT $limit OFFSET $offset;")->fetchAll(PDO::FETCH_OBJ);
+        return $connection->query("SELECT * FROM products INNER JOIN brands ON products.brandID = brands.id $filtersQuery LIMIT $limit OFFSET $offset;")->fetchAll(PDO::FETCH_OBJ);
     }
 
     function normalizeProductsQuery(array $params): array

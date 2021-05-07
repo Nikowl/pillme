@@ -10,9 +10,10 @@
             "handler" => false,
             "file" => ROOT_DIR . "/components/products/add.php"
         ],
-        // TODO: не должен открываться с методом GET
-        // TODO: сейчас обработка происходит в самом файле, а это работа роутера
+        // TODO: не должен открываться с методом GET (прочитать про ошибка 405)
+        // TODO: сейчас обработка происходит в самом файле, а это работа роутера (обработка в index.php)
         "/createProduct" => [
+            "method" => "post",
             "handler" => true,
             "file" => ROOT_DIR . "/components/products/create.php",
         ],

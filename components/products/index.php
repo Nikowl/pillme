@@ -10,7 +10,7 @@
     $products = getProducts($connection, $page, $query['filters'] ?? []);
 
     // TODO: не пора ли создать новый файл с функциями для брендов?
-    $brandsFilter = $connection->query("SELECT brandID,brandName FROM brands;")->fetchAll(PDO::FETCH_OBJ);
+    $brandsFilter = $connection->query("SELECT id , name  FROM brands;")->fetchAll(PDO::FETCH_OBJ);
 ?>
 <section class="">
     <div class="container-fluid py-5">
@@ -22,15 +22,15 @@
                         <div>
                             <?php foreach ($brandsFilter as $brands): ?>
                                 <div class="form-check">
-                                    <?php if (!empty($query['filters']['brand']) && in_array($brands->brandID, $query['filters']['brand'])): ?>
-                                        <input class="form-check-input" type="checkbox" name="filters[brand][]"
-                                               value="<?= $brands->brandID ?>" id="<?= $brands->brandID ?>" checked>
+                                    <?php if (!empty($query['filters']['brandID']) && in_array($brands->id, $query['filters']['brandID'])): ?>
+                                        <input class="form-check-input" type="checkbox" name="filters[brandID][]"
+                                               value="<?= $brands->id ?>" id="<?= $brands->id ?>" checked>
                                     <?php else: ?>
-                                        <input class="form-check-input" type="checkbox" name="filters[brand][]"
-                                               value="<?= $brands->brandID ?>" id="<?= $brands->brandID ?>">
+                                        <input class="form-check-input" type="checkbox" name="filters[brandID][]"
+                                               value="<?= $brands->id ?>" id="<?= $brands->id ?>">
                                     <?php endif; ?>
-                                    <label class="form-check-label" for="<?= $brands->brandID ?>">
-                                        <?= $brands->brandName ?>
+                                    <label class="form-check-label" for="<?= $brands->id ?>">
+                                        <?= $brands->name ?>
                                     </label>
                                 </div>
                             <?php endforeach; ?>
@@ -66,7 +66,7 @@
                                     <h5
                                             class="card-title h-50"><?= $product->name, " ", $product->dosage, $product->dosageUnit, ", ", $product->amount, $product->amountUnit ?></h5>
                                     <p class="card-text my-0"><small
-                                                class="text-muted"><b>Производитель: </b> <?= $product->brandName ?></small>
+                                                class="text-muted"><b>Производитель: </b> <?= $product->name ?></small>
                                     </p>
 
 
@@ -107,9 +107,7 @@
                     <?php endif; ?>
                     <?php if ($page !== 1): ?>
                         <li class="page-item">
-                            <!-- TODO: переписать этот кусок (и все похожие) так, чтобы не менять родительский массив -->
-                            <?php $query['page'] = $page - 1 ?>
-                            <a class="page-link" href="<?= '/?' . http_build_query($query) ?>">Назад</a>
+                            <a class="page-link" href="<?= '/?' . http_build_query(array_merge($query, ['page'=>$page - 1])) ?>">Назад</a>
                         </li>
                     <?php else: ?>
                         <li class="page-item disabled">
@@ -120,16 +118,14 @@
                         <?php if ($i === $page): ?>
                             <li class="page-item active"><a class="page-link" href="#"><?= $i ?></a></li>
                         <?php else: ?>
-                            <?php $query['page'] = $i ?>
                             <li class="page-item"><a class="page-link"
-                                                     href=" <?= '/?' . http_build_query($query) ?>"><?= $i ?></a>
+                                                     href=" <?= '/?' . http_build_query(array_merge($query, ['page'=>$i])) ?>"><?= $i ?></a>
                             </li>
                         <?php endif; ?>
                     <?php endfor; ?>
                     <?php if ($page !== $amountPages): ?>
                         <li class="page-item">
-                            <?php $query['page'] = $page + 1 ?>
-                            <a class="page-link" href="<?= '/?' . http_build_query($query) ?>">Вперёд</a>
+                            <a class="page-link" href="<?= '/?' . http_build_query(array_merge($query, ['page'=>$page + 1])) ?>">Вперёд</a>
                         </li>
                     <?php else: ?>
                         <li class="page-item disabled">
@@ -138,8 +134,7 @@
                     <?php endif; ?>
                     <?php if ($page !== $amountPages): ?>
                         <li class="page-item">
-                            <?php $query['page'] = $amountPages ?>
-                            <a class="page-link" href="<?= '/?' . http_build_query($query) ?>">&raquo;&raquo;</a>
+                            <a class="page-link" href="<?= '/?' . http_build_query(array_merge($query, ['page'=>$amountPages])) ?>">&raquo;&raquo;</a>
                         </li>
                     <?php else: ?>
                         <li class="page-item disabled">

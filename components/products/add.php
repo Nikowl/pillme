@@ -1,6 +1,5 @@
 <?php
     // TODO: см. замечание в кипе про префиксы колонок в таблице
-    // TODO: для справочных или мелких таблиц префиксы излишни, так как там не может быть других названий и ид, кроме брендовых
 
     /** @var PDO $connection */
     $brands = $connection->query("SELECT brandID,brandName FROM brands;")->fetchAll(PDO::FETCH_OBJ);
@@ -11,7 +10,7 @@
 <section class="bg-light">
     <div class="container py-5">
         <!-- TODO: создание сущности должно идти через метод POST -->
-        <form action="/createProduct" method="get">
+        <form action="/createProduct" method="post">
             <div class="row g-2 mb-2">
                 <div class="form-floating col-sm-12 col-md-8 col-lg-6 col-xl-4">
                     <select name="brand" class="form-select" id="brand"

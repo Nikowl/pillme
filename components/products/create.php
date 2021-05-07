@@ -2,7 +2,7 @@
     // валидация
     require_once ROOT_DIR.'/validation/product.php';
 
-    $query = validateCreateProductQuery($_GET);
+    $query = validateCreateProductQuery($_POST);
     $product = $query['input'];
 
     if (!empty($query['errors'])) {
