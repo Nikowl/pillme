@@ -58,3 +58,8 @@
 
         return $params;
     }
+
+    function getUnits(): array
+    {
+        return ['мг','мл','шт', 'капсулы', 'капли'];
+    }

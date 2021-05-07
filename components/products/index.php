@@ -8,7 +8,6 @@
     $amountPages = getAmountPages($connection, $query['filters'] ?? []);
     $page = (int)($query['page'] ?? 1); // номер страницы TODO: Есть косяк, если значение больше количества страниц. Выведет пустую страницу.
     $products = getProducts($connection, $page, $query['filters'] ?? []);
-
     // TODO: не пора ли создать новый файл с функциями для брендов?
     $brandsFilter = $connection->query("SELECT id as brandID , name as brandName  FROM brands;")->fetchAll(PDO::FETCH_OBJ);
 ?>

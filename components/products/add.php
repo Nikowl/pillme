@@ -2,8 +2,9 @@
     // TODO: см. замечание в кипе про префиксы колонок в таблице
 
     /** @var PDO $connection */
+    require_once (ROOT_DIR . '/components/products/function.php');
     $brands = $connection->query("SELECT id as brandID,name as brandName FROM brands;")->fetchAll(PDO::FETCH_OBJ);
-
+    $units = getUnits();
     $query = $_GET;
 ?>
 
@@ -59,12 +60,15 @@
                     <select name="amountUnit" class="form-select" id="amountUnit"
                             aria-label="Floating label select example" autocomplete="off"
                             style="<?= empty($query['errors']['amountUnit']) ?: 'border: 1px solid red' ?>">
-                        <option selected><?= $query['amountUnit'] ?? "" ?></option>
-                        <option value="шт">шт</option>
-                        <option value="капли">капли</option>
-                        <option value="капсулы">капсулы</option>
-                        <option value="мл">мл</option>
-                        <option value="мг">мг</option>
+                        <option selected></option>
+                        <?php foreach ($units as $unit): ?>
+                            <?php if (!empty($query['amountUnit']) && $unit ===
+                                $query['amountUnit']): ?>
+                                <option selected value="<?= $unit ?>"><?= $unit ?></option>
+                            <?php else: ?>
+                                <option value="<?= $unit ?>"><?= $unit ?></option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                     </select>
                     <label for="amountUnit">ЕИ</label>
                 </div>
@@ -80,13 +84,15 @@
                     <select name="dosageUnit" class="form-select" id="dosageUnit"
                             aria-label="Floating label select example" autocomplete="off"
                             style="<?= empty($query['errors']['dosageUnit']) ?: 'border: 1px solid red' ?>">
-<!--                      TODO: утащить единицы измерения в функцию -->
-                        <option selected><?= $query['dosageUnit'] ?? "" ?></option>
-                        <option value="шт">шт</option>
-                        <option value="капли">капли</option>
-                        <option value="капсулы">капсулы</option>
-                        <option value="мл">мл</option>
-                        <option value="мг">мг</option>
+                        <option selected></option>
+                        <?php foreach ($units as $unit): ?>
+                            <?php if (!empty($query['dosageUnit']) && $unit ===
+                                $query['dosageUnit']): ?>
+                                <option selected value="<?= $unit ?>"><?= $unit ?></option>
+                            <?php else: ?>
+                                <option value="<?= $unit ?>"><?= $unit ?></option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                     </select>
                     <label for="dosageUnit">ЕИ</label>
                 </div>
@@ -102,12 +108,15 @@
                     <select name="servingUnit" class="form-select" id="servingUnit"
                             aria-label="Floating label select example" autocomplete="off"
                             style="<?= empty($query['errors']['servingUnit']) ?: 'border: 1px solid red' ?>">
-                        <option selected><?= $query['servingUnit'] ?? "" ?></option>
-                        <option value="шт">шт</option>
-                        <option value="капли">капли</option>
-                        <option value="капсулы">капсулы</option>
-                        <option value="мл">мл</option>
-                        <option value="мг">мг</option>
+                        <option selected></option>
+                        <?php foreach ($units as $unit): ?>
+                            <?php if (!empty($query['servingUnit']) && $unit ===
+                                $query['servingUnit']): ?>
+                                <option selected value="<?= $unit ?>"><?= $unit ?></option>
+                            <?php else: ?>
+                                <option value="<?= $unit ?>"><?= $unit ?></option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                     </select>
                     <label for="servingUnit">ЕИ</label>
                 </div>
