@@ -3,7 +3,7 @@
 
     /** @var PDO $connection */
     require_once (ROOT_DIR . '/components/products/function.php');
-    $brands = $connection->query("SELECT id as brandID,name as brandName FROM brands;")->fetchAll(PDO::FETCH_OBJ);
+    $brands = getBrands($connection);
     $units = getUnits();
     $query = $_GET;
 ?>
@@ -16,7 +16,7 @@
                     <select name="brand" class="form-select" id="brand"
                             aria-label="Floating label select example" autocomplete="off"
                             style="<?= empty($query['errors']['brand']) ?: 'border: 1px solid red' ?>">
-                        <option selected></option>
+                        <option selected>test</option>
                         <?php foreach ($brands as $brand): ?>
                             <?php if (!empty($query['brand']) && $brand->brandID ===
                                     $query['brand']): ?>

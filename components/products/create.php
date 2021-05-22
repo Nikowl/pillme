@@ -1,7 +1,6 @@
 <?php
     // валидация
     require_once ROOT_DIR.'/validation/product.php';
-//    var_export($_POST); exit();
     $query = validateCreateProductQuery($_POST);
     $product = $query['input'];
 
@@ -12,7 +11,7 @@
 
     // вставка в бд
     $sql = '
-        INSERT INTO products(brandID, codeProduct, createTime, name, amount, amountUnit, dosage, dosageUnit, serving, servingUnit, perDay, timeOfTaking) 
+        INSERT INTO products(brandID, codeProduct, createTime, productName, amount, amountUnit, dosage, dosageUnit, serving, servingUnit, perDay, timeOfTaking) 
         VALUES (:brand, :codeProduct, CURRENT_TIMESTAMP(),  :name, :amount, :amountUnit, :dosage, :dosageUnit, :serving, :servingUnit, :perDay, :timeOfTaking)
     ';
 

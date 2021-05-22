@@ -2,12 +2,13 @@
     /** Функции валидации должны проверить ВЕРНО или НЕ ВЕРНО. Они не должны ни чего менять. */
     /*     * Файл валидации должен содержать только функции для проверки данных. Подключается только там где нужен. */
 
+    /** @var PDO $connection */
 
     function validateCreateProductQuery(array $productData): array
     {
         $validatedData = filter_var_array($productData, getProductValidationRules());
 
-        $errors= checkEmptyValues($validatedData);
+        $errors= checkErrors($validatedData);
 
         return [
             'input' => $productData,
@@ -16,7 +17,7 @@
         ];
     }
 
-    function checkEmptyValues(array $arr): array
+    function checkErrors(array $arr): array
     {
         $errors = [];
         if (count($arr) !== count(array_filter($arr))) //TODO: заменить условие проверки. Данная запись сложна для понимания!
@@ -32,7 +33,22 @@
     {
         return [
             // TODO: с вводом отдельной таблицы для брендов, тут нужно проверить, что переданный ид бренда существует в таблице
-            'brand' => FILTER_VALIDATE_INT,
+            'brand' => [
+              'filter'=>FILTER_CALLBACK,
+              'options'=>function ($brand) {
+                  $logPass = require(ROOT_DIR . '/config/logPass.php');
+                  $connection = new PDO($logPass['dsn'], $logPass['username'], $logPass['password']);
+                  require_once(ROOT_DIR . '/components/products/function.php');
+                  $brands = getBrands($connection);
+                  foreach ($brands as $b) {
+                      if ($b->brandID === $brand) {
+                          return $brand;
+                          exit();
+                      }
+                  }
+                  return null;
+              }
+            ],
             'codeProduct' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'name' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'amount' => [
@@ -56,4 +72,16 @@
             'servingUnit' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'timeOfTaking' => FILTER_SANITIZE_FULL_SPECIAL_CHARS
         ];
+    }
+
+    function isBrand($brand)
+    {
+        $brands = getBrands($connection);
+        foreach ($brands as $b) {
+            if ($b->brandID === $brand) {
+                return $brand;
+                exit();
+            }
+        }
+        return null;
     }

@@ -12,8 +12,9 @@
         ],
         // TODO: не должен открываться с методом GET (прочитать про ошибка 405)
         // TODO: сейчас обработка происходит в самом файле, а это работа роутера (обработка в index.php)
+        //TODO: если не правильный метод, то бросать на 404
         "/createProduct" => [
-            "method" => "post",
+            "methods" => ['POST'],
             "handler" => true,
             "file" => ROOT_DIR . "/components/products/create.php",
         ],

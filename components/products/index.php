@@ -2,14 +2,12 @@
     /** @var PDO $connection */
     /** @var int $limitProductsOnPage */
     require_once(ROOT_DIR . '/components/products/function.php');
-
     $query = normalizeProductsQuery($_GET);
-
+    var_export($query);echo '</br>';
     $amountPages = getAmountPages($connection, $query['filters'] ?? []);
-    $page = (int)($query['page'] ?? 1); // номер страницы TODO: Есть косяк, если значение больше количества страниц. Выведет пустую страницу.
+    $page = $query['page']; // номер страницы TODO: Есть косяк, если значение больше количества страниц. Выведет пустую страницу.
     $products = getProducts($connection, $page, $query['filters'] ?? []);
-    // TODO: не пора ли создать новый файл с функциями для брендов?
-    $brandsFilter = $connection->query("SELECT id as brandID , name as brandName  FROM brands;")->fetchAll(PDO::FETCH_OBJ);
+    $brandsFilter = getBrands($connection);
 ?>
 <section class="">
     <div class="container-fluid py-5">
@@ -38,7 +36,7 @@
                 </form>
                 <div class="row mt-2">
                     <div class="col-12 d-grid my-2">
-                        <input type="text" class="form-control" value="<?= $query['filters']['name'] ?? '' ?>" placeholder="Наименование" form="filtersForm" name="filters[name]" autocomplete="off">
+                        <input type="text" class="form-control" value="<?= $query['filters']['productName'] ?? '' ?>" placeholder="Наименование" form="filtersForm" name="filters[productName]" autocomplete="off">
                     </div>
                     <div class="col-6 d-grid my-2">
                         <button  type="reset" class="btn btn-sm btn-secondary btn-block" form="filtersForm">Сбросить
@@ -63,7 +61,7 @@
                                 </figure>
                                 <div class="card-body pt-0">
                                     <h5
-                                            class="card-title h-50"><?= $product->brandName, " ", $product->dosage, $product->dosageUnit, ", ", $product->amount, $product->amountUnit ?></h5>
+                                            class="card-title h-50"><?= $product->productName, " ", $product->dosage, $product->dosageUnit, ", ", $product->amount, $product->amountUnit ?></h5>
                                     <p class="card-text my-0"><small
                                                 class="text-muted"><b>Производитель: </b> <?= $product->brandName ?></small>
                                     </p>

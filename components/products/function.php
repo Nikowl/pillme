@@ -10,17 +10,16 @@
         $values = [];
         $prepareQuery = [];
         foreach ($filters as $filter => $valueFilter) {
-            if (is_array($valueFilter)) {
+            if (!empty($valueFilter) && is_array($valueFilter)) {
                 foreach ($valueFilter as $v) {
                     $values[] = $filter . " LIKE '%" . addslashes($v) . "%'";
                 }
                 $prepareQuery[] = '(' . implode(' OR ', $values) . ')';
             } elseif (!empty($valueFilter)) {
-                $prepareQuery[] = '(' .$filter . " LIKE '%" . addslashes($valueFilter) . "%'" . ')';
+                $prepareQuery[] = '(' . $filter . " LIKE '%" . addslashes($valueFilter) . "%'" . ')';
             }
 
         }
-
         if (empty($prepareQuery)) {
             return null;
         }
@@ -58,13 +57,21 @@
 
     function normalizeProductsQuery(array $params): array
     {
+        $validateParams = [
+            'page' => 1,
+            'filters' => [
+                'brandID' => [],
+                'productName' => ''
+            ]
+        ];
+        $cleanedParams = array_intersect_key($params, $validateParams); // Чистим массив от некорректных значений. Возвращает только те элементы $params, которые есть в массиве $validateParams
         // TODO: написать функцию-нормализатор параметров
         // TODO: это такая функция, которая валидирует и "очищает" полученные входные параметры.
 
-        return $params;
+        return array_replace($validateParams, $cleanedParams);
     }
 
     function getUnits(): array
     {
-        return ['мг','мл','шт', 'капсулы', 'капли'];
+        return ['мг', 'мл', 'шт', 'капсулы', 'капли'];
     }
