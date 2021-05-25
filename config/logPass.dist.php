@@ -1,6 +1,6 @@
 <?php
     return [
         "dsn" => "",
-        "username" => "",
+        "userName" => "",
         "password" => ""
     ];

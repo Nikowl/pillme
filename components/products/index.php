@@ -3,7 +3,7 @@
     /** @var int $limitProductsOnPage */
     require_once(ROOT_DIR . '/components/products/function.php');
     $query = normalizeProductsQuery($_GET);
-    var_export($query);echo '</br>';
+//    var_export($query);echo '</br>';
     $amountPages = getAmountPages($connection, $query['filters'] ?? []);
     $page = $query['page']; // номер страницы TODO: Есть косяк, если значение больше количества страниц. Выведет пустую страницу.
     $products = getProducts($connection, $page, $query['filters'] ?? []);

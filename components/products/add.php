@@ -17,6 +17,7 @@
                             aria-label="Floating label select example" autocomplete="off"
                             style="<?= empty($query['errors']['brand']) ?: 'border: 1px solid red' ?>">
                         <option selected>test</option>
+                        <option>7</option>
                         <?php foreach ($brands as $brand): ?>
                             <?php if (!empty($query['brand']) && $brand->brandID ===
                                     $query['brand']): ?>

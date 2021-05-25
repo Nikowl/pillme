@@ -1,10 +1,8 @@
 <?php
     // инициализация
     define('ROOT_DIR', __DIR__);
-
-    $logPass = require_once(ROOT_DIR . '/config/logPass.php');
-    $connection = new PDO($logPass['dsn'], $logPass['username'], $logPass['password']);
-
+    require_once (ROOT_DIR . '/config/connection.php');
+    $connection = getConnection(); //TODO: убрать вызов с index.php Вызывать непосредственно там где это надо.
     // роут
     $routes = require_once(ROOT_DIR . '/config/routes.php');
     $requestedRoute = explode('?', $_SERVER['REQUEST_URI'])[0] ?? null;

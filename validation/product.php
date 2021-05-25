@@ -2,13 +2,11 @@
     /** Функции валидации должны проверить ВЕРНО или НЕ ВЕРНО. Они не должны ни чего менять. */
     /*     * Файл валидации должен содержать только функции для проверки данных. Подключается только там где нужен. */
 
-    /** @var PDO $connection */
-
     function validateCreateProductQuery(array $productData): array
     {
         $validatedData = filter_var_array($productData, getProductValidationRules());
-
-        $errors= checkErrors($validatedData);
+//        var_export($validatedData);
+        $errors = checkErrors($validatedData);
 
         return [
             'input' => $productData,
@@ -22,7 +20,7 @@
         $errors = [];
         if (count($arr) !== count(array_filter($arr))) //TODO: заменить условие проверки. Данная запись сложна для понимания!
         {
-            foreach ($arr as $key=>$value) {
+            foreach ($arr as $key => $value) {
                 !empty($value) ?: $errors[$key] = 'Заполните данное поле';
             }
         }
@@ -32,22 +30,9 @@
     function getProductValidationRules(): array
     {
         return [
-            // TODO: с вводом отдельной таблицы для брендов, тут нужно проверить, что переданный ид бренда существует в таблице
             'brand' => [
-              'filter'=>FILTER_CALLBACK,
-              'options'=>function ($brand) {
-                  $logPass = require(ROOT_DIR . '/config/logPass.php');
-                  $connection = new PDO($logPass['dsn'], $logPass['username'], $logPass['password']);
-                  require_once(ROOT_DIR . '/components/products/function.php');
-                  $brands = getBrands($connection);
-                  foreach ($brands as $b) {
-                      if ($b->brandID === $brand) {
-                          return $brand;
-                          exit();
-                      }
-                  }
-                  return null;
-              }
+                'filter' => FILTER_CALLBACK,
+                'options' => "validateBrand"
             ],
             'codeProduct' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'name' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
@@ -74,14 +59,15 @@
         ];
     }
 
-    function isBrand($brand)
+    function validateBrand(mixed $brandId): bool
     {
-        $brands = getBrands($connection);
-        foreach ($brands as $b) {
-            if ($b->brandID === $brand) {
-                return $brand;
-                exit();
-            }
+        $brandId = (int)$brandId;
+        if (!$brandId) {
+            return false;
         }
-        return null;
+        $row = getConnection()->query("SELECT COUNT(1) FROM brands WHERE id = $brandId;")->fetchAll(PDO::FETCH_COLUMN);
+        if ($row[0] > 0) {
+            return $brandId;
+        }
+        return false;
     }
