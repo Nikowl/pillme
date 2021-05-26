@@ -3,9 +3,8 @@
     $connection = getConnection();
     require_once(ROOT_DIR . '/components/products/function.php');
     $query = normalizeProductsQuery($_GET);
-//    var_export($query);echo '</br>';
     $amountPages = getAmountPages($connection, $query['filters'] ?? []);
-    $page = $query['page']; // номер страницы TODO: Есть косяк, если значение больше количества страниц. Выведет пустую страницу.
+    $page = normalizePage($query['page'] ?? 1, $amountPages); // номер страницы TODO: Есть косяк, если значение больше количества страниц. Выведет пустую страницу.
     $products = getProducts($connection, $page, $query['filters'] ?? []);
     $brandsFilter = getBrands($connection);
 ?>
@@ -115,8 +114,7 @@
                         <?php if ($i === $page): ?>
                             <li class="page-item active"><a class="page-link" href="#"><?= $i ?></a></li>
                         <?php else: ?>
-                            <li class="page-item"><a class="page-link"
-                                                     href=" <?= '/?' . http_build_query(array_merge($query, ['page'=>$i])) ?>"><?= $i ?></a>
+                            <li class="page-item"><a class="page-link"  href=" <?= '/?' . http_build_query(array_merge($query, ['page'=>$i])) ?>"><?= $i ?></a>
                             </li>
                         <?php endif; ?>
                     <?php endfor; ?>

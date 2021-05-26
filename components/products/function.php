@@ -57,18 +57,27 @@
 
     function normalizeProductsQuery(array $params): array
     {
-        $validateParams = [
+        $correctParams = [
             'page' => 1,
             'filters' => [
                 'brandID' => [],
                 'productName' => ''
             ]
         ];
-        $cleanedParams = array_intersect_key($params, $validateParams); // Чистим массив от некорректных значений. Возвращает только те элементы $params, которые есть в массиве $validateParams
-        // TODO: написать функцию-нормализатор параметров
-        // TODO: это такая функция, которая валидирует и "очищает" полученные входные параметры.
+        $cleanedParams = array_intersect_key($params, $correctParams); // Чистим массив от некорректных значений. Возвращает только те элементы $params, которые есть в массиве $validateParams
+        if (array_key_exists('filters', $cleanedParams)) {
+            $cleanedParams['filters'] = array_intersect_key($cleanedParams['filters'],$correctParams['filters']);
+        }
 
-        return array_replace($validateParams, $cleanedParams);
+        return $cleanedParams;
+    }
+
+    function normalizePage(mixed $page, int $amountPage): int {
+        $page = (int)$page;
+        if (!$page || $page > $amountPage || $page < $amountPage) {
+            $page = 1;
+        }
+        return $page;
     }
 
     function getUnits(): array
