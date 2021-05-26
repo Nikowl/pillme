@@ -1,6 +1,6 @@
 <?php
-    /** @var PDO $connection */
     /** @var int $limitProductsOnPage */
+    $connection = getConnection();
     require_once(ROOT_DIR . '/components/products/function.php');
     $query = normalizeProductsQuery($_GET);
 //    var_export($query);echo '</br>';

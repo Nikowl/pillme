@@ -59,15 +59,15 @@
         ];
     }
 
-    function validateBrand(mixed $brandId): bool
+    function validateBrand(mixed $brand): bool
     {
-        $brandId = (int)$brandId;
-        if (!$brandId) {
+        $brand = (int)$brand;
+        if (!$brand) {
             return false;
         }
-        $row = getConnection()->query("SELECT COUNT(1) FROM brands WHERE id = $brandId;")->fetchAll(PDO::FETCH_COLUMN);
+        $row = getConnection()->query("SELECT COUNT(1) FROM brands WHERE id = $brand;")->fetchAll(PDO::FETCH_COLUMN);
         if ($row[0] > 0) {
-            return $brandId;
+            return $brand;
         }
         return false;
     }

@@ -15,8 +15,7 @@
         VALUES (:brand, :codeProduct, CURRENT_TIMESTAMP(),  :name, :amount, :amountUnit, :dosage, :dosageUnit, :serving, :servingUnit, :perDay, :timeOfTaking)
     ';
 
-    /** @var PDO $connection */
-    $statement = $connection->prepare($sql);
+    $statement = getConnection()->prepare($sql);
     $statement->execute([
         'brand' => $product['brand'],
         'codeProduct' => $product['codeProduct'],

@@ -1,9 +1,8 @@
 <?php
     // TODO: см. замечание в кипе про префиксы колонок в таблице
 
-    /** @var PDO $connection */
     require_once (ROOT_DIR . '/components/products/function.php');
-    $brands = getBrands($connection);
+    $brands = getBrands(getConnection());
     $units = getUnits();
     $query = $_GET;
 ?>
