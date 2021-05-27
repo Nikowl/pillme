@@ -5,20 +5,19 @@
     function validateCreateProductQuery(array $productData): array
     {
         $validatedData = filter_var_array($productData, getProductValidationRules());
-//        var_export($validatedData);
         $errors = checkErrors($validatedData);
 
         return [
             'input' => $productData,
             'errors' => $errors,
-            'attention' => "*Числа должны быть в диапазоне от 1 до 5000</br>*Поля не должны быть пустыми",
         ];
     }
 
     function checkErrors(array $arr): array
     {
         $errors = [];
-        if (count($arr) !== count(array_filter($arr))) //TODO: заменить условие проверки. Данная запись сложна для понимания!
+        $deletedEmptyValues = array_filter($arr); //array_filter удаляет пустые значения если не была передана callback-функция
+        if (count($arr) !== count($deletedEmptyValues)) //если количетсво элементов в входном массиве не равно количеству элементов в массиве $deleteEmptyValues, значит в входном массиве есть пустые значения
         {
             foreach ($arr as $key => $value) {
                 !empty($value) ?: $errors[$key] = 'Заполните данное поле';

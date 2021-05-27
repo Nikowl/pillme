@@ -1,25 +1,25 @@
 <?php
     // TODO: см. замечание в кипе про префиксы колонок в таблице
 
-    require_once (ROOT_DIR . '/components/products/function.php');
+    require_once(ROOT_DIR . '/components/products/function.php');
     $brands = getBrands(getConnection());
     $units = getUnits();
     $query = $_GET;
 ?>
 
-<section class="bg-light">
+<section>
     <div class="container py-5">
+
         <form action="/createProduct" method="post">
             <div class="row g-2 mb-2">
                 <div class="form-floating col-sm-12 col-md-8 col-lg-6 col-xl-4">
                     <select name="brand" class="form-select" id="brand"
                             aria-label="Floating label select example" autocomplete="off"
                             style="<?= empty($query['errors']['brand']) ?: 'border: 1px solid red' ?>">
-                        <option selected>test</option>
-                        <option>7</option>
+                        <option selected></option>
                         <?php foreach ($brands as $brand): ?>
                             <?php if (!empty($query['brand']) && $brand->brandID ===
-                                    $query['brand']): ?>
+                                $query['brand']): ?>
                                 <option selected value="<?= $brand->brandID ?>"><?= $brand->brandName ?></option>
                             <?php else: ?>
                                 <option value="<?= $brand->brandID ?>"><?= $brand->brandName ?></option>
@@ -145,12 +145,32 @@
             </div>
             <div class="row g-2">
                 <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 d-grid gap-2">
-                    <button type="reset" class="btn btn-primary">Сбросить</button>
+                    <a class="btn btn-primary" href="/addProduct" role="button">Сбросить</a>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 d-grid gap-2">
                     <button type="submit" class="btn btn-success">Добавить</button>
                 </div>
             </div>
         </form>
+        <?php if (!empty($query['alert']) && $query['alert'] === 'success'): ?>
+            <div class="row g-2 mb-2">
+                <div class="form-floating col-sm-12 col-md-8 col-lg-6 col-xl-4">
+                    <div class="alert alert-success alert-dismissible fade show my-3" role="alert">
+                        <strong>Успешно. </strong> Новая запись добавлена.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+        <?php if (!empty($query['alert']) && $query['alert'] === 'error'): ?>
+            <div class="row g-2 mb-2">
+                <div class="form-floating col-sm-12 col-md-8 col-lg-6 col-xl-4">
+                    <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+                        <strong>Ошибка! </strong> Не корректные данные.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
     </div>
 </section>

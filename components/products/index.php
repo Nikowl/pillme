@@ -4,7 +4,7 @@
     require_once(ROOT_DIR . '/components/products/function.php');
     $query = normalizeProductsQuery($_GET);
     $amountPages = getAmountPages($connection, $query['filters'] ?? []);
-    $page = normalizePage($query['page'] ?? 1, $amountPages); // номер страницы TODO: Есть косяк, если значение больше количества страниц. Выведет пустую страницу.
+    $page = normalizePage($query['page'] ?? 1, $amountPages);
     $products = getProducts($connection, $page, $query['filters'] ?? []);
     $brandsFilter = getBrands($connection);
 ?>

@@ -5,7 +5,7 @@
     $product = $query['input'];
 
     if (!empty($query['errors'])) {
-        header('Location: /addProduct?' . http_build_query(array_merge(['attention' => $query['attention']],['errors' => $query['errors']], $product)));
+        header('Location: /addProduct?' . http_build_query(array_merge(['alert'=>'error'],['errors' => $query['errors']], $product)));
         exit();
     }
 
@@ -31,4 +31,4 @@
 //        'expirationDate' => $params['expirationDate']
     ]);
 
-    header("Location: /addProduct");
+    header("Location: /addProduct?" . http_build_query(['alert'=>'success']));
