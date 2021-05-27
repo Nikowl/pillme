@@ -47,7 +47,7 @@
         // TODO: ты тут подцепляешь бренды, чтобы красиво отобразить название бренда в списке
         // TODO: пока можно оставить так, так как у тебя мало где используется эта функция и всего 1 джоин
         // TODO: не может явно понять откуда взять столбец name в условии WHERE алиас не работает. Времено изменил поле name в таблице products на productName
-        return $connection->query("SELECT p.*,  b.id as brandID, b.name as brandName FROM products as p INNER JOIN brands as b ON p.brandID = b.id $filtersQuery LIMIT $limit OFFSET $offset;")->fetchAll(PDO::FETCH_OBJ);
+        return $connection->query("SELECT p.*,  b.id as brandID, b.name as brandName FROM products as p INNER JOIN brands as b ON p.brandID = b.id $filtersQuery ORDER BY createTime DESC LIMIT $limit OFFSET $offset;")->fetchAll(PDO::FETCH_OBJ);
     }
 
     function getBrands(PDO $connection): array
