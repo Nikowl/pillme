@@ -8,10 +8,8 @@
 //    var_dump($requestedRoute);exit();
     $requestedMethod = $_SERVER['REQUEST_METHOD'];
     $route = $routes[$requestedRoute] ?? $routes['404'];
-    if (!empty($route['methods'])) {
-        if (!in_array($requestedMethod, $route['methods'])) {
+    if (!empty($route['methods']) && !in_array($requestedMethod, $route['methods'])) {
             $route = $routes['404'];
-        }
     }
     if ($route['handler']) {
         // обработчик
