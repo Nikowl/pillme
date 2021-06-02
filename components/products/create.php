@@ -2,21 +2,26 @@
     // валидация
     require_once ROOT_DIR.'/validation/product.php';
     $query = validateCreateProductQuery($_POST);
+    //TODO: написать валидацию для файла
+    $file = $_FILES['img'];
     $product = $query['input'];
 
     if (!empty($query['errors'])) {
         header('Location: /addProduct?' . http_build_query(array_merge(['alert'=>'error'],['errors' => $query['errors']], $product)));
         exit();
     }
-
+    //TODO: Поменять имя файла перед загузкой и выбрать правильное расширение.
+    $fileName = '/img/products/' . $file['name'];
+    move_uploaded_file($file['tmp_name'], ROOT_DIR . $fileName);
     // вставка в бд
     $sql = '
-        INSERT INTO products(brandID, codeProduct, createTime, productName, amount, amountUnit, dosage, dosageUnit, serving, servingUnit, perDay, timeOfTaking) 
-        VALUES (:brand, :codeProduct, CURRENT_TIMESTAMP(),  :name, :amount, :amountUnit, :dosage, :dosageUnit, :serving, :servingUnit, :perDay, :timeOfTaking)
+        INSERT INTO products(imgURL, brandID, codeProduct, createTime, productName, amount, amountUnit, dosage, dosageUnit, serving, servingUnit, perDay, timeOfTaking) 
+        VALUES (:imgURL, :brand, :codeProduct, CURRENT_TIMESTAMP(),  :name, :amount, :amountUnit, :dosage, :dosageUnit, :serving, :servingUnit, :perDay, :timeOfTaking)
     ';
 
     $statement = getConnection()->prepare($sql);
     $statement->execute([
+        'imgURL' => $fileName,
         'brand' => $product['brand'],
         'codeProduct' => $product['codeProduct'],
         'name' => $product['name'],

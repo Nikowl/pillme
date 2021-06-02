@@ -1,5 +1,4 @@
 <?php
-    // TODO: см. замечание в кипе про префиксы колонок в таблице
 
     require_once(ROOT_DIR . '/components/products/function.php');
     $brands = getBrands(getConnection());
@@ -10,7 +9,7 @@
 <section>
     <div class="container py-5">
 
-        <form action="/createProduct" method="post">
+        <form action="/createProduct" method="post" enctype="multipart/form-data">
             <div class="row g-2 mb-2">
                 <div class="form-floating col-sm-12 col-md-8 col-lg-6 col-xl-4">
                     <select name="brand" class="form-select" id="brand"
@@ -47,6 +46,12 @@
                     <label for="name">Название</label>
                     <!--                    <small class="text-danger">-->
                     <? //=$_GET['errors']['name'] ?? null?><!--</small>-->
+                </div>
+            </div>
+            <div class="row g-2 mb-2">
+                <div class=" col-sm-12 col-md-8 col-lg-6 col-xl-4">
+                    <label for="formFile" class="form-label"> </label>
+                    <input class="form-control" type="file" id="formFile" name="img" autocomplete="off">
                 </div>
             </div>
             <div class="row g-2 mb-2">

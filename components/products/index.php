@@ -4,7 +4,8 @@
     require_once(ROOT_DIR . '/components/products/function.php');
     $query = normalizeProductsQuery($_GET);
     $amountPages = getAmountPages($connection, $query['filters'] ?? []);
-    $page = normalizePage($query['page'] ?? 1, $amountPages);
+//    $page = normalizePage($query['page'] ?? 1, $amountPages);
+    $page = $query['page'] ?? 1;
     $products = getProducts($connection, $page, $query['filters'] ?? []);
     $brandsFilter = getBrands($connection);
 ?>
