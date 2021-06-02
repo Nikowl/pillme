@@ -72,3 +72,14 @@
     }
 
     //TODO: написать функцию и правило проверки уникальность поля Код товара
+    function validateCodeProduct(mixed $codeProduct)
+    {
+
+    }
+
+    function validateFile(array $file) :bool
+    {
+        if ($file['error'] != 0) {
+            return false;
+        }
+    }

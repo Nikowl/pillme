@@ -3,16 +3,17 @@
     require_once ROOT_DIR.'/validation/product.php';
     $query = validateCreateProductQuery($_POST);
     //TODO: написать валидацию для файла
-    $file = $_FILES['img'];
+    $fileImg = $_FILES['img'];
     $product = $query['input'];
 
     if (!empty($query['errors'])) {
         header('Location: /addProduct?' . http_build_query(array_merge(['alert'=>'error'],['errors' => $query['errors']], $product)));
         exit();
     }
-    //TODO: Поменять имя файла перед загузкой и выбрать правильное расширение.
-    $fileName = '/img/products/' . $file['name'];
-    move_uploaded_file($file['tmp_name'], ROOT_DIR . $fileName);
+    $explodeFileName = explode('.', $fileImg['name']);
+    $fileType = $explodeFileName[array_key_last($explodeFileName)];
+    $fileName = '/img/products/' . $query['input']['codeProduct'] . '.' . $fileType;
+    move_uploaded_file($fileImg['tmp_name'], ROOT_DIR . $fileName);
     // вставка в бд
     $sql = '
         INSERT INTO products(imgURL, brandID, codeProduct, createTime, productName, amount, amountUnit, dosage, dosageUnit, serving, servingUnit, perDay, timeOfTaking) 
