@@ -17,6 +17,17 @@
             "file" => ROOT_DIR . "/components/products/create.php",
             "methods" => ['POST']
         ],
+        "/updateProduct" => [
+            "handler" => true,
+            "file" => ROOT_DIR . "/components/products/update.php",
+            "methods" => ['POST']
+        ],
+
+        "/editProduct" => [
+            "handler" => false,
+            "file" => ROOT_DIR . "/components/products/edit.php",
+            "methods" => ['GET']
+        ],
 
 
         // Статические страницы

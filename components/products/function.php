@@ -50,6 +50,11 @@
         return $connection->query("SELECT p.*,  b.id as brandID, b.name as brandName FROM products as p INNER JOIN brands as b ON p.brandID = b.id $filtersQuery ORDER BY createTime DESC LIMIT $limit OFFSET $offset;")->fetchAll(PDO::FETCH_OBJ);
     }
 
+    function getOneProduct(PDO $connection, int $id): array
+    {
+        return $connection->query("SELECT * FROM products WHERE productID = $id;")->fetchAll(PDO::FETCH_OBJ);
+    }
+
     function getBrands(PDO $connection): array
     {
         return $connection->query("SELECT id as brandID , name as brandName  FROM brands;")->fetchAll(PDO::FETCH_OBJ);

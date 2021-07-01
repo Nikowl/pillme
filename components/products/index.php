@@ -61,10 +61,11 @@
                                 </figure>
                                 <div class="card-body pt-0">
                                     <h5
-                                            class="card-title h-50"><?= $product->productName, " ", $product->dosage, $product->dosageUnit, ", ", $product->amount, $product->amountUnit ?></h5>
+                                            class="card-title h-50"><?= $product->productName, " ", $product->dosage, " ", $product->dosageUnit, ", ", $product->amount, $product->amountUnit ?></h5>
                                     <p class="card-text my-0"><small
                                                 class="text-muted"><b>Производитель: </b> <?= $product->brandName ?></small>
                                     </p>
+                                    <small> <a href="<?= '/editProduct?productID=' . $product->productID ?>" >Редактировать</a> </small>
 
 
                                 </div>
