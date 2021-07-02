@@ -21,7 +21,7 @@
                 <select name="brand" class="form-select <?= empty($query['errors']['brand']) ?: 'alert-danger' ?>"
                         id="brand"
                         aria-label="Floating label select example" autocomplete="off">
-                    <option selected></option>
+                    <option selected><?= empty($query['errors']['brand']) ? '' : $query['brand'] ?></option>
                     <?php foreach ($brands as $brand): ?>
                         <?php if ($brand->brandID === $product->brandID && empty($query['errors']['brand'])): ?>
                             <option selected value="<?= $product->brandID ?>"><?= $brand->brandName ?></option>
@@ -43,7 +43,7 @@
                 <input type="text" name="name"
                        class="form-control <?= empty($query['errors']['name']) ?: 'alert-danger' ?>" id="name"
                        placeholder="" autocomplete="off"
-                       value="<?= !empty($query['errors']['name']) ? '' : $product->productName ?>">
+                       value="<?= !empty($query['errors']['name']) ? $query['name'] : $product->productName ?>">
                 <label for="name">Название</label>
             </div>
 
@@ -52,14 +52,14 @@
                     <input type="number" name="amount"
                            class="form-control <?= empty($query['errors']['amount']) ?: 'alert-danger' ?>" id="amount"
                            placeholder=""
-                           autocomplete="off" value="<?= !empty($query['errors']['amount']) ? '' : $product->amount ?>">
+                           autocomplete="off" value="<?= !empty($query['errors']['amount']) ? $query['amount'] : $product->amount ?>">
                     <label for="amount">Количество</label>
                 </div>
                 <div class="form-floating col-sm-6 col-md-4 col-lg-3 col-xl-2">
                     <select name="amountUnit"
                             class="form-select <?= empty($query['errors']['amountUnit']) ?: 'alert-danger' ?>" id="amountUnit"
                             aria-label="Floating label select example" autocomplete="off">
-                        <option selected></option>
+                        <option selected><?= empty($query['errors']['amountUnit']) ? '' : $query['amountUnit'] ?></option>
                         <?php foreach ($units as $unit): ?>
                             <?php if ($unit === $product->amountUnit && empty($query['errors']['amountUnit'])): ?>
                                 <option selected value="<?= $unit ?>"><?= $unit ?></option>
@@ -76,14 +76,14 @@
                     <input type="number" name="dosage"
                            class="form-control <?= empty($query['errors']['dosage']) ?: 'alert-danger' ?>" id="dosage"
                            placeholder=""
-                           autocomplete="off" value="<?= !empty($query['errors']['dosage']) ? '' : $product->dosage ?>">
+                           autocomplete="off" value="<?= !empty($query['errors']['dosage']) ? $query['dosage'] : $product->dosage ?>">
                     <label for="dosage">Дозировка</label>
                 </div>
                 <div class="form-floating col-sm-6 col-md-4 col-lg-3 col-xl-2">
                     <select name="dosageUnit"
                             class="form-select <?= empty($query['errors']['dosageUnit']) ?: 'alert-danger' ?>" id="dosageUnit"
                             aria-label="Floating label select example" autocomplete="off">
-                        <option selected></option>
+                        <option selected><?= empty($query['errors']['dosageUnit']) ? '' : $query['dosageUnit'] ?></option>
                         <?php foreach ($units as $unit): ?>
                             <?php if ($unit === $product->dosageUnit && empty($query['errors']['dosageUnit'])): ?>
                                 <option selected value="<?= $unit ?>"><?= $unit ?></option>
@@ -100,7 +100,7 @@
                     <input type="number" name="serving"
                            class="form-control <?= empty($query['errors']['serving']) ?: 'alert-danger' ?>" id="serving"
                            placeholder=""
-                           autocomplete="off" value="<?= !empty($query['errors']['serving']) ? '' : $product->serving ?>">
+                           autocomplete="off" value="<?= !empty($query['errors']['serving']) ? $query['serving'] : $product->serving ?>">
                     <label for="serving">Порция</label>
                 </div>
                 <div class="form-floating col-sm-6 col-md-4 col-lg-3 col-xl-2">
@@ -108,7 +108,7 @@
                             class="form-select <?= empty($query['errors']['servingUnit']) ?: 'alert-danger' ?>"
                             id="servingUnit"
                             aria-label="Floating label select example" autocomplete="off">
-                        <option selected></option>
+                        <option selected><?= empty($query['errors']['servingUnit']) ? '' : $query['servingUnit'] ?></option>
                         <?php foreach ($units as $unit): ?>
                             <?php if ($unit === $product->servingUnit && empty($query['errors']['servingUnit'])): ?>
                                 <option selected value="<?= $unit ?>"><?= $unit ?></option>
@@ -125,7 +125,7 @@
                     <input type="number" name="perDay"
                            class="form-control <?= empty($query['errors']['perDay']) ?: 'alert-danger' ?>" id="perDay"
                            placeholder=""
-                           autocomplete="off" value="<?= !empty($query['errors']['perDay']) ? '' : $product->perDay ?>">
+                           autocomplete="off" value="<?= !empty($query['errors']['perDay']) ? $query['perDay'] : $product->perDay ?>">
                     <label for="perDay">Приёмы</label>
                 </div>
                 <div class="form-floating col-sm-6 col-md-4 col-lg-3 col-xl-2">
@@ -133,7 +133,7 @@
                             class="form-select <?= empty($query['errors']['timeOfTaking']) ?: 'alert-danger' ?>"
                             id="timeOfTaking"
                             aria-label="Floating label select example" autocomplete="off">
-                        <option selected></option>
+                        <option selected><?= empty($query['errors']['timeOfTaking']) ? '' : $query['timeOfTaking'] ?></option>
                         <option <?= ($product->timeOfTaking !== 'Натощак' || !empty($query['errors']['timeOfTaking'])) ?: ' selected ' ?>value="Натощак">Натощак</option>
                         <option <?= ($product->timeOfTaking !== 'Во время еды' || !empty($query['errors']['timeOfTaking'])) ?: ' selected ' ?>value="Во время еды">Во время еды</option>
                         <option <?= ($product->timeOfTaking !== 'Между приёмами пищи' || !empty($query['errors']['timeOfTaking'])) ?: ' selected ' ?>value="Между приёмами пищи">Между приёмами пищи</option>
